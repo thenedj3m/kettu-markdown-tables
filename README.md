@@ -12,12 +12,6 @@ Paste this plugin URL into Kettu/Revenge/Vendetta-style client plugin installer:
 https://raw.githubusercontent.com/nedjem/kettu-markdown-tables/main/dist/markdownTables/manifest.json
 ```
 
-If your client expects the plugin folder URL instead, use:
-
-```text
-https://nedjem.github.io/kettu-markdown-tables/markdownTables/
-```
-
 ## Supported syntax
 
 ```md

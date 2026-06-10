@@ -1,0 +1,1 @@
+{"name":"Markdown Tables","description":"Locally renders GitHub-style pipe tables in Discord mobile messages as aligned box-drawing tables. Built for Kettu/Revenge/Vendetta-style clients.","authors":[{"name":"Hermes","id":"0"}],"main":"index.js","vendetta":{"icon":"ic_text_24px"},"hash":"5733dbf8e23fbc3ffb365814dbb7c9bd925fd892e44836bef220c1a9b24acff9"}

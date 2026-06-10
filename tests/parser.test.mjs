@@ -14,9 +14,16 @@ const { renderMarkdownTables } = await import(modPath);
 const input = '| Name | Count | Note |\n|---|---:|:---:|\n| A | 1 | x |\n| B\\|C | 22 | yy |';
 const output = renderMarkdownTables(input);
 assert.match(output, /^```\nName/);
-assert.match(output, /Name\s+Count\s+Note/);
+assert.match(output, /Name\s+│\s+Count\s+│\s+Note/);
+assert.match(output, /────────────/);
 assert.match(output, /B\|C/);
-assert.doesNotMatch(output, /[┌┐└┘│]/);
+assert.doesNotMatch(output, /[┌┐└┘]/);
+
+const wide = '| 観点 | Agent Reach | 今のHermesリサーチスキル群 | 判定 |\n|---|---|---|---|\n| X/Twitter | twitter-cli頼みで横幅が長い | 既にlocal rate-limit policyあり | 良 |\n| Reddit | API/JSON endpoint重視 | permalinkで出す | 可 |';
+const wideOutput = renderMarkdownTables(wide);
+assert.match(wideOutput, /^```\n#1\n観点: X\/Twitter/m);
+assert.match(wideOutput, /Agent Reach: twitter-cli頼みで横幅が長い/);
+assert.match(wideOutput, /────────────\n#2\n観点: Reddit/);
 
 const fenced = '```\n| A | B |\n|---|---|\n| 1 | 2 |\n```';
 assert.equal(renderMarkdownTables(fenced), fenced);

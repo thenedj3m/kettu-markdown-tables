@@ -1,6 +1,6 @@
 # Markdown Tables for Kettu / Revenge
 
-Locally renders GitHub-style Markdown pipe tables in Discord mobile messages as aligned box-drawing tables.
+Locally renders GitHub-style Markdown pipe tables in Discord mobile messages as compact aligned text tables.
 
 Discord mobile does not natively render GFM tables. This plugin watches incoming/local message dispatches and rewrites detected table blocks into fenced monospace tables on your client only.
 

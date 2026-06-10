@@ -55,21 +55,18 @@ function pad(input: string, width: number, alignment: Alignment) {
     return input + " ".repeat(diff);
 }
 
-function border(left: string, mid: string, right: string, widths: number[]) {
-    return left + widths.map(width => "─".repeat(width + 2)).join(mid) + right;
-}
-
 function renderTable(header: ParsedRow, alignments: Alignment[], body: ParsedRow[]) {
     const rows = [header, ...body].map(row => row.slice(0, header.length));
     const widths = header.map((_, index) => Math.max(...rows.map(row => visualLength(row[index] ?? ""))));
-    const renderRow = (row: ParsedRow) => "│" + header.map((_, index) => ` ${pad(row[index] ?? "", widths[index], alignments[index])} `).join("│") + "│";
+    const gap = "    ";
+    const renderRow = (row: ParsedRow) => header
+        .map((_, index) => pad(row[index] ?? "", widths[index], alignments[index]))
+        .join(gap)
+        .trimEnd();
 
     return [
-        border("┌", "┬", "┐", widths),
         renderRow(header),
-        border("├", "┼", "┤", widths),
         ...body.map(renderRow),
-        border("└", "┴", "┘", widths),
     ].join("\n");
 }
 

@@ -13,10 +13,10 @@ const { renderMarkdownTables } = await import(modPath);
 
 const input = '| Name | Count | Note |\n|---|---:|:---:|\n| A | 1 | x |\n| B\\|C | 22 | yy |';
 const output = renderMarkdownTables(input);
-assert.match(output, /^```\n┌/);
-assert.match(output, /│ Name │ Count │ Note │/);
+assert.match(output, /^```\nName/);
+assert.match(output, /Name\s+Count\s+Note/);
 assert.match(output, /B\|C/);
-assert.match(output, /└/);
+assert.doesNotMatch(output, /[┌┐└┘│]/);
 
 const fenced = '```\n| A | B |\n|---|---|\n| 1 | 2 |\n```';
 assert.equal(renderMarkdownTables(fenced), fenced);

@@ -9,7 +9,7 @@ const { code } = await transform(source, { filename: 'parser.ts', jsc: { parser:
 const dir = await mkdtemp(join(tmpdir(), 'mdtables-'));
 const modPath = join(dir, 'parser.mjs');
 await writeFile(modPath, code);
-const { renderMarkdownTables } = await import(modPath);
+const { renderMarkdownTables, parseMarkdownTables } = await import(modPath);
 
 const input = '| Name | Count | Note |\n|---|---:|:---:|\n| A | 1 | x |\n| B\\|C | 22 | yy |';
 const output = renderMarkdownTables(input);
@@ -18,6 +18,11 @@ assert.match(output, /Name\s+│\s+Count\s+│\s+Note/);
 assert.match(output, /────────────/);
 assert.match(output, /B\|C/);
 assert.doesNotMatch(output, /[┌┐└┘]/);
+const parsed = parseMarkdownTables(input);
+assert.equal(parsed.length, 1);
+assert.deepEqual(parsed[0].header, ['Name', 'Count', 'Note']);
+assert.deepEqual(parsed[0].alignments, ['left', 'right', 'center']);
+assert.equal(parsed[0].rows[1][0], 'B|C');
 
 const wide = '| 観点 | Agent Reach | 今のHermesリサーチスキル群 | 判定 |\n|---|---|---|---|\n| X/Twitter | twitter-cli頼みで横幅が長い | 既にlocal rate-limit policyあり | 良 |\n| Reddit | API/JSON endpoint重視 | permalinkで出す | 可 |';
 const wideOutput = renderMarkdownTables(wide);

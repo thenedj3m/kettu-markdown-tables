@@ -1,5 +1,11 @@
 export type Alignment = "left" | "center" | "right";
 
+export type MarkdownTable = {
+    header: string[];
+    alignments: Alignment[];
+    rows: string[][];
+};
+
 type ParsedRow = string[];
 
 const PLACEHOLDER = "\uE000";
@@ -137,6 +143,45 @@ function renderTable(header: ParsedRow, alignments: Alignment[], body: ParsedRow
 
 function isFence(line: string) {
     return /^\s*(```|~~~)/.test(line);
+}
+
+export function parseMarkdownTables(content: string): MarkdownTable[] {
+    if (!content?.includes("|")) return [];
+
+    const lines = content.split("\n");
+    const tables: MarkdownTable[] = [];
+    let inFence = false;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (isFence(line)) {
+            inFence = !inFence;
+            continue;
+        }
+
+        if (!inFence && looksLikeTableHeader(line) && i + 1 < lines.length) {
+            const header = splitRow(line);
+            const alignments = parseDelimiter(lines[i + 1], header.length);
+            if (alignments) {
+                const rows: ParsedRow[] = [];
+                let j = i + 2;
+                while (j < lines.length && lines[j].includes("|")) {
+                    const row = splitRow(lines[j]);
+                    if (row.length !== header.length) break;
+                    rows.push(normalizeRow(row, header.length));
+                    j++;
+                }
+                if (rows.length) tables.push({
+                    header: normalizeRow(header, header.length),
+                    alignments,
+                    rows,
+                });
+                i = j - 1;
+            }
+        }
+    }
+
+    return tables;
 }
 
 export function renderMarkdownTables(content: string) {

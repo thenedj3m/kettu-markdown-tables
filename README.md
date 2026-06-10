@@ -9,10 +9,16 @@ Discord mobile does not natively render GFM tables. This plugin watches incoming
 Paste this plugin base URL into Kettu/Revenge/Vendetta-style client plugin installer:
 
 ```text
-https://cdn.jsdelivr.net/gh/thenedj3m/kettu-markdown-tables@main/dist/markdownTables
+https://thenedj3m.github.io/kettu-markdown-tables/markdownTables
 ```
 
 Kettu appends `/manifest.json` to plugin URLs internally, so do **not** paste the raw `manifest.json` URL directly.
+
+Fallback raw GitHub base URL:
+
+```text
+https://raw.githubusercontent.com/thenedj3m/kettu-markdown-tables/main/dist/markdownTables
+```
 
 ## Supported syntax
 
